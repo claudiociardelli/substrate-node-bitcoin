@@ -100,15 +100,13 @@ pub fn new_test_ext() -> sp_io::TestExternalities {
 		..Default::default()
 	};
 
-    extension.assimilate_storage(&mut t).unwrap();
+	let extension = extension
+	.build_storage()
+	.unwrap();
 
-	// let extension = extension
-	// .build_storage()
-	// .unwrap();
-
-	// t.top.extend(
-	// 	extension.top,
-	// );
+	t.top.extend(
+		extension.top,
+	);
 	
 	
 	// t.top.extend(
