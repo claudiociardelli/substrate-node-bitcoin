@@ -1,8 +1,22 @@
 use crate as pallet_template;
+use super::*;
+use crate::mock::sp_api_hidden_includes_construct_runtime::hidden_include::traits::GenesisBuild;
+use hex_literal::hex;
+pub use codec::{Decode, Encode};
+
 use frame_support::parameter_types;
 use frame_system as system;
-use sp_core::H256;
-use sp_runtime::{
+use sp_keystore::testing::KeyStore;
+use sp_keystore::KeystoreExt;
+use sp_keystore::SyncCryptoStore;
+use sp_std::sync::Arc;
+pub use sp_core::{
+	H256,
+	H512,
+	testing::SR25519,
+};
+pub use sp_runtime::{
+	BuildStorage,
 	testing::Header,
 	traits::{BlakeTwo256, IdentityLookup},
 };
@@ -18,7 +32,7 @@ frame_support::construct_runtime!(
 		UncheckedExtrinsic = UncheckedExtrinsic,
 	{
 		System: frame_system::{Pallet, Call, Config, Storage, Event<T>},
-		TemplateModule: pallet_template::{Pallet, Call, Storage, Event<T>},
+		TemplateModule: pallet_template::{Pallet, Call, Storage, Event<T>, Config},
 	}
 );
 
@@ -58,6 +72,63 @@ impl pallet_template::Config for Test {
 }
 
 // Build genesis storage according to the mock runtime.
+const ALICE_PHRASE: &str = "news slush supreme milk chapter athlete soup sausage put clutch what kitten";
+pub const GENESIS_UTXO: [u8; 32] = hex!("79eabcbd5ef6e958c6a7851b36da07691c19bda1835a08f875aa286911800999");
 pub fn new_test_ext() -> sp_io::TestExternalities {
-	system::GenesisConfig::default().build_storage::<Test>().unwrap().into()
+	// Create keys ofr a test user Alice
+	// Store a seed  (100, Alice owned) in genesis storage
+    // Store Alices keys storage
+
+
+	// Create keys for a test user Alice
+	let keystore = KeyStore::new(); // a key storage to store new key pairs during testing
+
+	//there was a write here in the workshop. Does not exist in doc?
+	let alice_pub_key = keystore.sr25519_generate_new(SR25519, Some(ALICE_PHRASE)).unwrap();
+
+	// Store a seed  (100, Alice owned) in genesis storage
+ 	let mut t = frame_system::GenesisConfig::default().build_storage::<Test>().unwrap();
+	
+	let extension = pallet_template::GenesisConfig  {
+		genesis_utxos: vec![
+			TransactionOutput {
+				value: 100,
+				pubkey: H256::from(alice_pub_key)
+			}
+
+		],
+		..Default::default()
+	};
+
+    extension.assimilate_storage(&mut t).unwrap();
+
+	// let extension = extension
+	// .build_storage()
+	// .unwrap();
+
+	// t.top.extend(
+	// 	extension.top,
+	// );
+	
+	
+	// t.top.extend(
+	// 	pallet_template::GenesisConfig  {
+	// 		genesis_utxos: vec![
+	// 			TransactionOutput {
+	// 				value: 100,
+	// 				pubkey: H256::from(alice_pub_key)
+	// 			}
+
+	// 		],
+	// 		..Default::default()
+	// 	}
+	// 	.build_storage()
+	// 	.unwrap()
+	// 	.top,
+	// );
+	let mut ext = sp_io::TestExternalities::from(t);
+	
+   // Store Alices keys storage
+   ext.register_extension(KeystoreExt(Arc::new(keystore)));
+   ext
 }

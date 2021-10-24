@@ -13,23 +13,58 @@ version = '3.0.0-monthly-2021-09+1'
 [package.metadata.docs.rs]
 targets = ['x86_64-unknown-linux-gnu']
 
-[dev-dependencies.sp-core]
+# [dependencies]
+# orml-traits = { git = 'https://github.com/open-web3-stack/open-runtime-module-library', rev = '43b1d26d70d5f55ae412d5ee988e9bfd244277c0', default-features = false }
+
+[dev-dependencies.sp-keystore]
+default-features = false
+git = 'https://github.com/paritytech/substrate.git'
+tag = 'monthly-2021-09+1'
+version = '0.10.0-dev'
+
+[dev-dependencies]
+hex-literal = "0.2.1"
+
+# [dependencies.sp-consensus-aura]
+# default-features = false
+# git = 'https://github.com/paritytech/substrate.git'
+# tag = 'monthly-2021-09+1'
+# version = '0.10.0-dev'
+
+# [dev-dependencies.mocktopus]
+# version = "0.7.11"
+# default-features = false
+
+
+[dependencies.sp-std]
+default-features = false
+git = 'https://github.com/paritytech/substrate.git'
+tag = 'monthly-2021-09+1'
+version = '4.0.0-dev'
+# version = '2.0.0-rc6'
+
+[dependencies.sp-io]
 default-features = false
 git = 'https://github.com/paritytech/substrate.git'
 tag = 'monthly-2021-09+1'
 version = '4.0.0-dev'
 
-[dev-dependencies.sp-io]
+[dependencies.sp-core]
 default-features = false
 git = 'https://github.com/paritytech/substrate.git'
 tag = 'monthly-2021-09+1'
 version = '4.0.0-dev'
 
-[dev-dependencies.sp-runtime]
+[dependencies.sp-runtime]
 default-features = false
 git = 'https://github.com/paritytech/substrate.git'
 tag = 'monthly-2021-09+1'
 version = '4.0.0-dev'
+
+[dependencies.serde]
+features = ['derive']
+optional = true
+version = '1.0.130'
 
 [dependencies.codec]
 default-features = false
@@ -56,6 +91,7 @@ git = 'https://github.com/paritytech/substrate.git'
 tag = 'monthly-2021-09+1'
 version = '4.0.0-dev'
 
+
 [features]
 default = ['std']
 runtime-benchmarks = ['frame-benchmarking']
@@ -64,5 +100,7 @@ std = [
     'frame-support/std',
     'frame-system/std',
     'frame-benchmarking/std',
+    'serde/std',
+    # 'orml-traits/std',
 ]
 try-runtime = ['frame-support/try-runtime']

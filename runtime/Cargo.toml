@@ -8,13 +8,14 @@ publish = false
 repository = 'https://github.com/substrate-developer-hub/substrate-node-template/'
 version = '3.0.0-monthly-2021-09+1'
 
+
+[dependencies]
+# pallet-assets = {version= '4.0.0-dev', git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-09+1', default-features = false}
+pallet-template = {version = '3.0.0-monthly-2021-09+1', path = '../pallets/template', default-features = false}
+
+
 [package.metadata.docs.rs]
 targets = ['x86_64-unknown-linux-gnu']
-
-[dependencies.pallet-template]
-default-features = false
-path = '../pallets/template'
-version = '3.0.0-monthly-2021-09+1'
 
 [build-dependencies.substrate-wasm-builder]
 git = 'https://github.com/paritytech/substrate.git'
@@ -204,6 +205,7 @@ std = [
     'frame-system/std',
     'pallet-aura/std',
     'pallet-balances/std',
+    # 'pallet-assets/std',
     'pallet-grandpa/std',
     'pallet-randomness-collective-flip/std',
     'pallet-sudo/std',

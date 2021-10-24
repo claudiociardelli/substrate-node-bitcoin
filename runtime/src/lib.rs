@@ -269,10 +269,11 @@ impl pallet_sudo::Config for Runtime {
 /// Configure the pallet-template in pallets/template.
 impl pallet_template::Config for Runtime {
 	type Event = Event;
+	// type MyCurrency1 = Balances;
 }
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
-construct_runtime!(
+	construct_runtime!(
 	pub enum Runtime where
 		Block = Block,
 		NodeBlock = opaque::Block,
